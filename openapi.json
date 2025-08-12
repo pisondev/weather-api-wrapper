@@ -1,0 +1,126 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Weather API Wrapper",
+    "description": "A simple efficient wrapper for a third-party weather API includes caching layer with Redis.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/weather/{city}": {
+      "get": {
+        "tags": [
+          "Weather API"
+        ],
+        "summary": "Get Current Weather by City",
+        "description": "Retrieves the current weather for a specified city. Results will cached to improve performance for repeated requests.",
+        "parameters": [
+          {
+            "name": "city",
+            "in": "path",
+            "description": "The name of the city to get weather data for.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Jakarta"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved weather data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeatherResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - The city name provided is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - The requested city could not be found by the external weather service.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable - The external weather API is currently down or unreachable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "WeatherResponse": {
+        "type": "object",
+        "properties": {
+          "location": {
+            "type": "string",
+            "example": "Jakarta"
+          },
+          "temp": {
+            "type": "number",
+            "format": "float",
+            "example": 29.5
+          },
+          "conditions": {
+            "type": "string",
+            "example": "Partly cloudy"
+          },
+          "retrieved_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The UTC timestamp of when the data was fetched from the source.",
+            "example": "2025-08-12T04:40:53Z"
+          },
+          "cached": {
+            "type": "boolean",
+            "description": "Indicates if this response was served from the cache.",
+            "example": false
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
