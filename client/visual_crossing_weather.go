@@ -1,11 +1,11 @@
 package client
 
 type VisualCrossingWeather struct {
-	ResolvedAddress string `json:"resolved_address"`
-	Days            Days   `json:"days"`
+	ResolvedAddress  string      `json:"resolvedAddress"`
+	CurentConditions CurrentCond `json:"currentConditions"`
 }
 
-type Days struct {
+type CurrentCond struct {
 	Temp       float64 `json:"temp"`
 	Conditions string  `json:"conditions"`
 }

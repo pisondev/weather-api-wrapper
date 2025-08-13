@@ -6,6 +6,6 @@ type WeatherResponse struct {
 	Location    string    `json:"location"`
 	Temp        float64   `json:"temp"`
 	Conditions  string    `json:"conditions"`
-	RetrievedAt time.Time `json:"retrieved_at"`
+	RetrievedAt time.Time `json:"retrievedAt"`
 	Cached      bool      `json:"cached"`
 }
