@@ -11,6 +11,12 @@ type WeatherControllerImpl struct {
 	WeatherService service.WeatherService
 }
 
+func NewWeatherController(weatherService service.WeatherService) WeatherController {
+	return &WeatherControllerImpl{
+		WeatherService: weatherService,
+	}
+}
+
 func (controller *WeatherControllerImpl) GetCurrentConditions(ctx *fiber.Ctx) error {
 	city := ctx.Params("city")
 	weather, isCached, err := controller.WeatherService.GetCurrentConditions(ctx.Context(), city)

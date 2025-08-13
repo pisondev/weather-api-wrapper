@@ -15,6 +15,13 @@ type WeatherServiceImpl struct {
 	WeatherClient client.WeatherClient
 }
 
+func NewWeatherService(redisCache cache.RedisCache, weatherClient client.WeatherClient) WeatherService {
+	return &WeatherServiceImpl{
+		RedisCache:    redisCache,
+		WeatherClient: weatherClient,
+	}
+}
+
 func (service *WeatherServiceImpl) GetCurrentConditions(ctx context.Context, location string) (model.Weather, bool, error) {
 	cacheKey := "weather:" + strings.ToLower(location)
 	cachedData, err := service.RedisCache.Get(ctx, cacheKey)

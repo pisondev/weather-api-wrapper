@@ -12,6 +12,13 @@ type WeatherClientImpl struct {
 	HttpClient *http.Client
 }
 
+func NewWeatherClient(apiKey string, httpClient *http.Client) WeatherClient {
+	return &WeatherClientImpl{
+		ApiKey:     apiKey,
+		HttpClient: httpClient,
+	}
+}
+
 func (client *WeatherClientImpl) Fetch(ctx context.Context, city string) (*VisualCrossingWeather, error) {
 	url := fmt.Sprintf("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/%s?unitGroup=metric&key=%s&contentType=json&include=current", city, client.ApiKey)
 
